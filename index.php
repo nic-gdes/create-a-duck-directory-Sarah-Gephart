@@ -1,5 +1,6 @@
 <?php
     $page_title = "Home";
+    include('./config/db.php');
     include('./components/head.php');
 ?>
 
@@ -20,7 +21,27 @@
             </div>
 
             <div class="grid">
-                <a href="./profile.php">
+                <?php foreach($ducks as $duck) : ?>
+                    <a href="./profile.php">
+                    <div class="grid-item dave">
+                        <img class="grid-img" src="<?php echo $duck["img_source"]; ?>" alt="Artwork of a yellow duck wearing a top hat and bow tie, holding a knife by studiosarahann on Instagram">
+                        <h2><?php echo $duck["name"]; ?></h2>
+                        <?php
+                            // Break duck's favorite foods into an array by comma
+                            $food_list = explode(",", $duck["favorite_foods"]);
+                        ?>
+
+                        <h3>Favorite Foods</h3>
+                        <ul>
+                            <?php foreach($food_list as $food) : ?>
+                                <li><?php echo $food ?></li>
+                            <?php endforeach ?>
+                        </ul>
+                    </div>
+                    </a>
+                <?php endforeach ?>
+
+                <!-- <a href="./profile.php">
                     <div class="grid-item dave">
                         <img class="grid-img" src="./assets/images/DUCK_DAVE_FALL2022_Duck.jpg" alt="Artwork of a yellow duck wearing a top hat and bow tie, holding a knife by studiosarahann on Instagram">
                         <h2>Dave the Duck</h2>
@@ -91,7 +112,7 @@
                             <li>Tea</li>
                         </ul>
                     </div>
-                </a>
+                </a> -->
             </div>
         </div>
     </main>

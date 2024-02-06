@@ -98,7 +98,7 @@ textarea {
     color: var(--input-text);
     border: var(--input-bg) solid 3px;
     transition: ease-in .3s;
-    width: 175px;
+    width: 400px;
 }
 
 #submit:hover {
@@ -112,7 +112,7 @@ textarea {
     color: var(--input-text);
     border: var(--input-bg) solid 3px;
     transition: ease-in .3s;
-    width: 215px;
+    width: 400px;
 }
 
 #file:hover {
@@ -126,6 +126,7 @@ textarea {
 .main-container {
     max-width: 80%;
     background-color: var(--main-bg);
+    padding: 0 0 25px 0;
     margin: 0 auto;
 }
 
@@ -143,6 +144,11 @@ textarea {
     margin: 5%;
     text-align: center;
     margin: 15px;
+}
+
+.grid-item {
+    padding: 25px;
+    /* background-color: var(--hamburger-bg); */
 }
 
 .profile {

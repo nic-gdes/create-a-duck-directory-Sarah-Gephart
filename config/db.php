@@ -15,7 +15,7 @@ if (mysqli_connect_errno()) {
 /******** EXECUTE QUERIES ON THE DATABASE TO RETRIEVE DATA *********/
 // write query for all ducks ( SELECT name, favorite_foods, imgsrc FROM ducks )
 
-$sql = "SELECT * FROM Example";
+$sql = "SELECT name,favorite_foods,img_source FROM ducks";
 
 // make query and get result
 
@@ -23,7 +23,7 @@ $result = mysqli_query($conn, $sql);
 
 // fetch the resulting rows as an array
 
-$data = mysqli_fetch_all($result, MYSQLI_ASSOC);
+$ducks = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 /******** WRAP UP DATABASE CONNECTION *********/
 // free the result from memory
@@ -34,14 +34,10 @@ mysqli_free_result($result);
 
 mysqli_close($conn);
 
-// print_r($data);
+// print_r($ducks);
+
+// foreach($ducks as $duck) {
+//     echo $duck['favorite_foods'];
+// }
 
 ?>
-
-<h1>Hello There</h1>
-
-<ul>
-    <?php foreach($data as $name) : ?>
-        <li><?php echo $name['first_name']; ?></li>
-    <?php endforeach ?>
-</ul>
