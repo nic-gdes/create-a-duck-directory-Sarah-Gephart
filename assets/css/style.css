@@ -123,6 +123,11 @@ textarea {
 
 /* CLASSES */
 
+.error {
+    color: red;
+    font-weight: bold;
+}
+
 .main-container {
     max-width: 80%;
     background-color: var(--main-bg);
