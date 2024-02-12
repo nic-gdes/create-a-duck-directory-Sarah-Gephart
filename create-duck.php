@@ -1,4 +1,5 @@
 <?php
+
     $page_title = "Create a Duck";
     include('./components/head.php');
 
@@ -10,13 +11,13 @@
         $errors = array(
             "name" => "",
             "favorite_foods" => "",
-            "message" => ""
+            "bio" => ""
         );
 
         // get POST
         $name = htmlspecialchars($_POST ["name"]);
         $favorite_foods = htmlspecialchars($_POST ["favorite_foods"]);
-        $message = htmlspecialchars($_POST ["message"]);
+        $bio = htmlspecialchars($_POST ["bio"]);
 
         
         // check if the name exists
@@ -53,14 +54,30 @@
 
 
         // check if bio/message is empty
-        if(empty($message)) {
+        if(empty($bio)) {
 
             // if it doesn't, throw error "required"
-            $errors ["message"] = "A bio is required.";
+            $errors ["bio"] = "A bio is required.";
         }
 
         if(!array_filter($errors)) {
             // everything is good, form is valid
+
+            // connect to database
+            require('./config/db.php');
+
+            // build sql query
+            $sql = "INSERT INTO ducks (name, favorite_foods, bio) VALUES ('$name', '$favorite_foods', '$bio')";
+
+            // echo $sql;
+
+            // execute query in mysql
+            mysqli_query($conn, $sql);
+
+            echo "Query is successful. Added: " . $name . "to database.";
+
+            // load homepage
+
             header("Location: ./index.php");
         } else {
             // if there are any errors
@@ -110,15 +127,15 @@
                     <input type="file" id="file" name="file" value="Upload" />
                 </div> -->
                 <div>
-                    <label for="message">Duck Biography</label>
+                    <label for="bio">Duck Biography</label>
 
                     <?php
-                        if (isset($errors['message'])) {
-                            echo "<div class='error'>" . $errors["message"] . "</div>";
+                        if (isset($errors['bio'])) {
+                            echo "<div class='error'>" . $errors["bio"] . "</div>";
                         }
                     ?>
 
-                    <textarea name="message" id="message" cols="40" placeholder="Gerald has been practicing using his throwing stars as well as being a gentleman. He lives in London." required><?php if (isset($message)) { echo $message; } ?></textarea>
+                    <textarea name="bio" id="bio" cols="40" placeholder="Gerald has been practicing using his throwing stars as well as being a gentleman. He lives in London." required><?php if (isset($bio)) { echo $bio; } ?></textarea>
                 </div>
                 
                 <input type="submit" id="submit" name="submit" value="Submit" />
