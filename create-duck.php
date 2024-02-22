@@ -7,17 +7,20 @@
 
     if (isset($_POST['submit'])) {
 
+
         // create error array
         $errors = array(
             "name" => "",
             "favorite_foods" => "",
-            "bio" => ""
+            "bio" => "",
+            "img_src" => ""
         );
 
         // get POST
         $name = htmlspecialchars($_POST ["name"]);
         $favorite_foods = htmlspecialchars($_POST ["favorite_foods"]);
         $bio = htmlspecialchars($_POST ["bio"]);
+        $img_src = $_FILES["img_src"]["name"];
 
         
         // check if the name exists
@@ -60,6 +63,52 @@
             $errors ["bio"] = "A bio is required.";
         }
 
+        // Handle file uplead target directory
+        $target_dir ="./assets/images/";
+        
+
+        // Target uploaded image file
+        $image_file = $target_dir . basename($_FILES["img_src"]["name"]);
+
+        // Get upleaded file extension so we can test to make sure it's an image
+        $image_file_type = strtolower(pathinfo($image_file,PATHINFO_EXTENSION));
+
+        // Test image for errors
+            // image exists
+            if (empty($img_src)) {
+                $errors["img_src"] = "An image is required.";
+            } else {
+
+                // Check that the image file is an actual image
+                $size_check = @getimagesize($_FILES["img_src"]["tmp_name"]);
+                $file_size = $_FILES["img_src"]["size"];
+
+                if(!$size_check) {
+                    // Check if file is an image
+                    $errors["img_src"] = "File is not an image.";
+                } else if ($file_size > 500000) {
+                    // Check if file isze is too big
+                    $errors["img_src"] = "File size cannot be larger than 500kb. There are too many bytes.";
+                } else if ($image_file_type != "jpg"
+                && $image_file_type != "png"
+                && $image_file_type != "jpeg"
+                && $image_file_type != "gif"
+                && $image_file_type != "webp") {
+                    // Check if filetype is acceptable
+                    $errors["img_src"] = "Sorry, only JPG, JPEG, PNG, GIF, or WEP files are allowed.";
+                } else if (move_uploaded_file($_FILES["img_src"]["tmp_name"], $image_file)) {
+                    
+                    // file uploaded successfully
+                } else {
+                    $errors["img_src"] = "Sorry, there was an error uploading you file.";
+                }
+
+
+                print_r($errors);
+            }
+
+
+
         if(!array_filter($errors)) {
             // everything is good, form is valid
 
@@ -67,7 +116,7 @@
             require('./config/db.php');
 
             // build sql query
-            $sql = "INSERT INTO ducks (name, favorite_foods, bio) VALUES ('$name', '$favorite_foods', '$bio')";
+            $sql = "INSERT INTO ducks (name, favorite_foods, bio, img_source) VALUES ('$name', '$favorite_foods', '$bio', '$image_file')";
 
             // echo $sql;
 
@@ -99,7 +148,7 @@
         <h1>Create a Duck</h1>
         <p>Fill out this form to add a new duck to the homepage.</p>
         <section class=form>
-            <form action="./create-duck.php?submitted=true" method="POST">
+            <form action="./create-duck.php?submitted=true" method="POST" enctype="multipart/form-data">
                 <div>
                     <label for="name">Name</label>
 
@@ -122,10 +171,15 @@
 
                     <input type="text" id="favorite_foods" name="favorite_foods" placeholder="Cucumbers, finger sandwiches, tea" value="<?php if (isset($favorite_foods)) { echo $favorite_foods; } ?>" required />
                 </div>
-                <!-- <div>
+                <div>
                     <label for="file">Profile Image</label>
-                    <input type="file" id="file" name="file" value="Upload" />
-                </div> -->
+                    <?php
+                        if(isset($errors['img_src'])) {
+                            echo "<div class='error'>" . $errors["img_src"] . "</div>";
+                        }
+                    ?>
+                    <input type="file" id="image" name="img_src" />
+                </div>
                 <div>
                     <label for="bio">Duck Biography</label>
 
