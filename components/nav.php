@@ -1,7 +1,7 @@
 <header>
         <nav class="navbar">
             <!-- LOGO -->
-            <a href="/" <?xml version="1.0" encoding="UTF-8"?>
+            <a href="/"> <?xml version="1.0" encoding="UTF-8"?>
             <svg id="logo" data-name="Layer 4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320.55 344.37">
               <defs>
               </defs>
