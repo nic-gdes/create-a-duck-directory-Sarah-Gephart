@@ -107,6 +107,21 @@ textarea {
     color: var(--input-bg);
 }
 
+#delete {
+    background-color: var(--submit-bg);
+    color: var(--input-text);
+    border: var(--submit-hover-bg) solid 3px;
+    transition: ease-in .3s;
+    width: 400px;
+}
+
+#delete:hover {
+    transition: ease-in .3s;
+    border: var(--input-border) solid 3px;
+    background-color: var(--submit-hover-bg);
+    color: var(--input-bg);
+}
+
 #file {
     background-color: var(--submit-bg);
     color: var(--input-text);

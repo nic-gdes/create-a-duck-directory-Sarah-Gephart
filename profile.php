@@ -1,16 +1,25 @@
 <?php
     $page_title = "Home";
     include('./components/head.php');
-    
-    $ducks_is_live = false;
 
+    // Connect to db
+    require('./config/db.php');
+
+    if (isset($_POST['delete'])) {
+        $id_to_delete = (int)$_POST['id_to_delete'];
+        $sql_delete ="DELETE FROM ducks WHERE id='$id_to_delete'";
+
+        mysqli_query($conn, $sql_delete);
+        header ("Location: ./index.php");
+    }
+
+    $ducks_is_live = false;
+    
     if (isset($_GET['id'])) {
         // Assign a variable to the id
         $id = htmlspecialchars($_GET['id']);
 
         // Get the duck into from the database
-            // Connect to db
-            require('./config/db.php');
 
             // Create a query to select the intended duck from the db
             $sql = "SELECT id, name, favorite_foods, bio, img_source FROM ducks WHERE id=$id";
@@ -25,10 +34,11 @@
             if(isset($ducks["id"])) {
                 $ducks_is_live = true;
             }
+
+            // Check if there's a delete request
+            
+
     }
-
-
-
 ?>
 
 <body>
@@ -49,6 +59,12 @@
                         <?php foreach($food_list as $food) : ?>
                                 <li><?php echo $food ?></li>
                         <?php endforeach ?> </ul>
+                        <form action="./profile.php" method="POST">
+
+                            <input type="hidden" id="delete" name="id_to_delete" value="<?php echo $id; ?>">
+                            <input type="submit" id="delete" name="delete" value="Delete Duck">
+
+                        </form>
                     </div>
                 </div>
             </div>

@@ -5,7 +5,7 @@
 /******** EXECUTE QUERIES ON THE DATABASE TO RETRIEVE DATA *********/
 // write query for all ducks ( SELECT name, favorite_foods, imgsrc FROM ducks )
 
-$sql = "SELECT name,favorite_foods,img_source FROM ducks";
+$sql = "SELECT id, name,favorite_foods,img_source FROM ducks";
 
 // make query and get result
 
@@ -53,7 +53,7 @@ mysqli_close($conn);
 
             <div class="grid">
                 <?php foreach($ducks as $duck) : ?>
-                    <a href="./profile.php">
+                    <a href="./profile.php?id=<?php echo $duck['id']; ?>">
                     <div class="grid-item dave">
                         <img class="grid-img" src="<?php echo $duck["img_source"]; ?>" alt="Artwork of a yellow duck wearing a top hat and bow tie, holding a knife by studiosarahann on Instagram">
                         <h2><?php echo $duck["name"]; ?></h2>
